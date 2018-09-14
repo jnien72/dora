@@ -1,0 +1,149 @@
+
+@(uis: Array[String], colSize: Int)
+@showQuery = {@uis.contains("query")}
+@showDs = {@uis.contains("ds")}
+@showEtl = {@uis.contains("etl")}
+<script src="js/dora-dashboard.js" type="text/javascript" charset="utf-8"></script>
+<div id="page-wrapper" class="sectionContent">
+    <br /><br />
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="page-header" id="pageHeader"><i class="fa fa-dashboard fa-fw"></i>
+                <a style="cursor:pointer ;" onclick="$('#menu_dashboard').click()">Dashboard</a>
+            </h4>
+            <input type="hidden" id="showQuery" value="@showQuery">
+            <input type="hidden" id="showDs" value="@showDs">
+            <input type="hidden" id="showEtl" value="@showEtl">
+        </div>
+    </div>
+
+    <div class="row">
+        @if(showQuery.toString().equals("true")) {
+            <div class="col-md-@colSize">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-search fa-3x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div id="queryRunning" class="huge"><img src="/img/loading.gif"/></div>
+                                <div id="queryLabel">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if(showDs.toString().equals("true")) {
+            <div class="col-md-@colSize">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-database fa-3x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div id="dsRunning" class="huge"><img src="/img/loading.gif"/></div>
+                                <div id="dsLabel">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if(showEtl.toString().equals("true")) {
+            <div class="col-md-@colSize">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-sitemap fa-3x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div id="etlRunning" class="huge"><img src="/img/loading.gif"/></div>
+                                <div id="etlLabel">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <br/>
+    <ul class="nav nav-tabs">
+        @if(showQuery.toString().equals("true")) {
+            <li class="active"><a href="#queryDashboardTab" data-toggle="tab"><i class="fa fa-search fa-fw"></i> SQL Query</a>
+            </li>
+        }
+        @if(showDs.toString().equals("true")) {
+            <li><a href="#dsDashboardTab" data-toggle="tab"><i class="fa fa-database fa-fw"></i> Data Source</a>
+            </li>
+        }
+        @if(showEtl.toString().equals("true")) {
+            <li><a href="#etlDashboardTab" data-toggle="tab"><i class="fa fa-sitemap fa-fw"></i> ETL Workflow</a>
+            </li>
+        }
+    </ul>
+
+
+        <!-- Tab panes -->
+    <div class="tab-content">
+        @if(showQuery.toString().equals("true")) {
+            <div class="tab-pane fade in active" id="queryDashboardTab">
+                <div id="searchQueryDiv">
+                    <br/>
+                    <table>
+                        <tr>
+                            <td><b>Search:&nbsp;</b></td>
+                            <td><input id="searchQuery" type="text"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <br/>
+                <div>
+                    <div style="font-family: monospace; font-size:11px" id="queryStatusTable">
+                        <span class="help-block"><img src="/img/loading.gif" style="margin-bottom:5px ; margin-left: 10px"></span>
+                    </div>
+                </div>
+            </div>
+        }
+        @if(showDs.toString().equals("true")) {
+            <div class="tab-pane fade" id="dsDashboardTab">
+                <div id="searchDsDiv">
+                    <br/>
+                    <table>
+                        <tr>
+                            <td><b>Search:&nbsp;</b></td>
+                            <td><input id="searchDs" type="text"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <br/>
+                <div>
+                    <div style="font-family: monospace; font-size:11px" id="dsStatusTable">
+                    </div>
+                </div>
+            </div>
+        }
+        @if(showEtl.toString().equals("true")) {
+            <div class="tab-pane fade" id="etlDashboardTab">
+                <div id="searchEtlDiv">
+                    <br/>
+                    <table>
+                        <tr>
+                            <td><b>Search:&nbsp;</b></td>
+                            <td><input id="searchEtl" type="text"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <br/>
+                <div>
+                    <div style="font-family: monospace; font-size:11px" id="etlStatusTable">
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <br/>
+</div>

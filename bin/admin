@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd `dirname "$0"`;
+cd ..
+export APP_HOME=`pwd`;
+
+CLASSPATH="";
+for jar_file in $APP_HOME/lib/*.jar; do
+	CLASSPATH="$CLASSPATH:$jar_file";
+done;
+CLASSPATH="etc:$CLASSPATH";
+java -classpath $CLASSPATH $JVM_OPTS com.eds.dora.cluster.ClusterAdmin $@

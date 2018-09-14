@@ -1,0 +1,69 @@
+[
+  {
+    "namespace": "test",
+    "instances": [
+      {
+        "name": "test-MetaInstance",
+        "memory": "1g",
+        "configuration":{
+        }
+      },
+      {
+        "name": "test-QueryInstance",
+        "memory": "1g",
+        "configuration":{
+          "spark.master": "yarn-client",
+          "spark.submit.deployMode": "client",
+          "spark.default.parallelism": 200,
+          "spark.sql.shuffle.partitions": 200,
+          "spark.executor.memory": "16g",
+          "spark.scheduler.mode": "FAIR",
+          "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
+          "spark.kryoserializer.buffer.max": "1g",
+          "spark.memory.storageFraction": "0.2",
+          "spark.executor.extraJavaOptions": "-XX:+UseCompressedOops -XX:+UseG1GC -Xss1g",
+          "spark.shuffle.io.numConnectionsPerPeer": 10,
+          "spark.yarn.executor.memoryOverhead": 2048,
+          "spark.yarn.max.executor.failures": 2147483647,
+          "spark.executor.cores": 5,
+          "spark.executor.instances": 3,
+          "spark.sql.parquet.mergeSchema": true
+        }
+      },
+      {
+        "name": "test-DsInstance",
+        "memory": "1g",
+        "configuration":{
+          "spark.master":"local",
+          "spark.executor.cores": "5",
+          "spark.executor.instances": "3"
+        }
+      },
+      {
+        "name": "test-EtlInstance",
+        "memory": "1g",
+        "configuration": {
+          "spark.master": "yarn-client",
+          "spark.submit.deployMode": "client",
+          "spark.default.parallelism": 200,
+          "spark.sql.shuffle.partitions": 200,
+          "spark.executor.memory": "12g",
+          "spark.scheduler.mode": "FAIR",
+          "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
+          "spark.kryoserializer.buffer.max": "1g",
+          "spark.memory.storageFraction": "0.2",
+          "spark.executor.extraJavaOptions": "-XX:+UseCompressedOops -XX:+UseG1GC -Xss1g",
+          "spark.shuffle.io.numConnectionsPerPeer": 10,
+          "spark.yarn.executor.memoryOverhead": 2048,
+          "spark.yarn.max.executor.failures": 2147483647,
+          "spark.executor.cores": "5",
+          "spark.executor.instances": "3",
+          "spark.sql.parquet.mergeSchema": "true"
+        }
+      }
+    ],
+    "predefinedViews": {
+      "dcs_etmall": "/dcs/etmall"
+    }
+  }
+]

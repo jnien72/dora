@@ -1,0 +1,236 @@
+@import com.eds.dora.util.{EnvConstants, EnvProperty}
+@import com.eds.dora.web.model.SectionDesc
+@import play.api.mvc.RequestHeader
+
+@(request: RequestHeader, sectionDesc: Array[SectionDesc], namespaces: Array[String])
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>dora</title>
+
+        <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="/css/sb-admin-2.css" rel="stylesheet" type="text/css">
+        <link href="/css/bootstrap-social.css" rel="stylesheet" type="text/css">
+        <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/handson-table/css/handsontable.css" rel="stylesheet" type="text/css"media="screen">
+        <link href="/js-tree/jstree.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/data-tables/css/data-tables.css" rel="stylesheet" type="text/css"/>
+        <link href="/data-tables/css/data-tables-select.min.css" rel="stylesheet" type="text/css"/>
+
+        <script src="/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/jquery-md5.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/metisMenu.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/sb-admin-2.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/ace/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/dora.js" type="text/javascript" charset="utf-8"></script>
+        <link href="/css/dora.css" rel="stylesheet" type="text/css">
+        <script src="js-tree/jstree.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/handson-table/js/pikaday/pikaday.js"></script>
+        <script src="/handson-table/js/moment/moment.js"></script>
+        <script src="/handson-table/js/zeroclipboard/ZeroClipboard.js"></script>
+        <script src="/handson-table/js/numbro/numbro.js"></script>
+        <script src="/handson-table/js/handsontable.js"></script>
+        <script src="/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="/data-tables/data-tables.min.js"></script>
+        <script src="/data-tables/data-tables-buttons.min.js"></script>
+        <script src="/data-tables/data-tables-select.min.js"></script>
+        <script src="/js/fusioncharts/fusioncharts.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/fusioncharts/fusioncharts.charts.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/fusioncharts/fusioncharts.widgets.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/fusioncharts/fusioncharts.theme.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/dora-charts.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <nav class="navbar navbar-default navbar-static-top" role="nav" style="margin-bottom: 0 ; background-color:#114b53 ; position:fixed ; min-width:100%">
+                <div class="navbar-header" >
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle nav</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img class="navbar-brand" src="/img/dora.jpg" style="height:50px;padding:5px;"/>
+                    <a class="navbar-brand" style="color: #fff ;
+                        font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif ;" href="/">D O R A</a>
+                </div>
+                @if(request != null && request.session.get("username").isDefined) {
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-user fa-fw"></i>
+                                @request.session.get("username")
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="logout.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
+                @if(request != null && request.session.get("username").isDefined && request.session.get("username").get.equals(EnvProperty.get(EnvConstants.TOPOLOGY_EDITOR))) {
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown">
+                            <a style="cursor:pointer;" data-toggle="modal" data-target="#topologyModal" id='topology'>
+                                <i class="fa fa-cog fa-fw"></i>
+                                topology
+                            </a>
+                        </li>
+                    </ul>
+                }
+                @if(request != null && request.session.get("username").isDefined) {
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown">
+                            <a style="cursor:pointer;" data-toggle="modal" data-target="#instancesModal" id='instancesStatus'>
+                                <i class="fa fa-server fa-fw"></i>
+                                instances
+                            </a>
+                        </li>
+                    </ul>
+                }
+                @if(request != null && request.session.get("namespace").isDefined) {
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-globe fa-fw"></i>
+                                @request.session.get("namespace")
+                                @if(namespaces.length > 0) {
+                                    <i class="fa fa-caret-down"></i>
+                                }
+                            </a>
+                            @if(namespaces.length > 0) {
+                                <ul class="dropdown-menu dropdown-user" style="left:0px">
+                                    <form id="namespaceForm" style="display:none;"  method="post" action="/switchNamespace.html">
+                                        <input name="namespace", id="namespaceInput">
+                                        <input name="state", id="stateInput">
+                                    </form>
+                                    @for(i <- 0 to namespaces.length - 1) {
+                                        <li>
+                                            <a href="javascript:void(0)" class="namespace" name="@namespaces(i)">
+                                                <i class="fa fa-globe fa-fw"></i>
+                                                @namespaces(i)</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    </ul>
+                }
+
+
+                @if(request.session.get("username").getOrElse(null) != null) {
+                    <div class="navbar-default sidebar">
+                        <div align="center">
+                            <br/><br/>
+                            @for(i <- 0 to sectionDesc.length - 1) {
+                                @if(sectionDesc(i).enabled) {
+                                    <a id="menu_@sectionDesc(i).id" class="sectionMenu" href="#@sectionDesc(i).id">
+                                    }
+                                <i class="fa @sectionDesc(i).icon fa-fw fa-2x"></i>
+                                <p class="menu-text">@sectionDesc(i).name</p>
+                                @if(sectionDesc(i).enabled) {
+                                </a>
+
+                                }
+                                <br/>
+                            }
+                        </div>
+                    </div>
+                }
+            </nav>
+            <div id="pageContentDiv" style="width:100%">
+
+                <img src="/img/loading-bar.gif" id="loadingBar" style="
+                position: absolute ;
+                top: 50% ;
+                left: 50% ;
+                width: 200px ;
+                height: 100px ;
+                margin-top: -100px ;
+                margin-left: -50px ;
+                z-index: -1 ;
+                " alt="Loading">
+
+                @for(i <- 0 to sectionDesc.length - 1) {
+                    <div id="@(sectionDesc(i).id)PanelDiv" style="display:none"></div>
+                }
+            </div>
+
+            <!-- Message Modal -->
+            <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="modalCloseBtn">&times;</span></button>
+                            <h4 class="modal-title" id="messageModalLabel">Message</h4>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="modalConfirmBtn">
+                                Confirm</button>
+                            <button type="button" class="btn btn-default modalCloseBtn" data-dismiss="modal" >Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instances Modal -->
+            <div class="modal fade" id="instancesModal" role="dialog">
+                <div class="modal-dialog" style="width: 850px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-server"></i> Instances</h4>
+                        </div>
+                        <div class="modal-body" style="text-align:center;">
+                            <div>
+                                <img src="/img/loading.gif" id="instanceStatusLoading" style="margin-bottom:5px ; margin-left: 10px">
+                                <table id="instancesStatusTable"></table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <!-- Topology Modal -->
+            <div class="modal fade" id="topologyModal" role="dialog">
+                <div class="modal-dialog" style="width: 850px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-cog"></i> Topology</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="topologyBody" style="display:none;">
+                                <div id="topologyEditor"></div>
+                            </div>
+                            <div id="topologyMessage" style="display:none;">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="updateTopologyBtn">
+                                <img src="/img/loading.gif" id="instanceStatusLoading" style="height:15px;display:none;">
+                                <span>Apply</span>
+                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

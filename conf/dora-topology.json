@@ -1,0 +1,32 @@
+{
+  "namespaceList": [
+    {
+      "name": "test",
+      "enabled":true,
+      "instances": [
+        {
+          "instanceType": "query",
+          "enabled":true,
+          "heapSize": "1g",
+          "configuration": {
+            "spark.master": "local"
+          }
+        }
+      ],
+      "predefinedTables": {
+        "dcs_etmall":"/tmp/hdfs/warehouse/dcs/etmall"
+      }
+    }
+  ],
+  "userList":[
+    {
+      "username": "test",
+      "password": "test",
+      "acl": {
+        "test": [
+          "query", "dashboard"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,395 @@
+@import com.eds.sql.udf.DoraUDF
+@(doraUdfs: Array[DoraUDF])
+
+<script src="js/dora-query.js" type="text/javascript" charset="utf-8"></script>
+<div id="page-wrapper" class="sectionContent">
+    <br /> <br />
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="page-header" id="pageHeader"><i class="fa fa-search fa-fw"></i>
+                <a style="cursor:pointer ;" onclick="$('#menu_query').click()">Query</a>
+            </h4>
+        </div>
+    </div>
+    <div class="row">
+        <div id="queryPanel" class="col-sm-8">
+            <div class="form-group">
+                <div style="float:right" class="queryBtns">
+                    <button id="queryExecuteBtn" class="btn btn-default btnQuery"
+                    onfocus="this.blur();"
+                    data-hover="tooltip" title="Execute" data-placement="left">
+                        <i id="queryExecuteBtnIcon" class="fa fa-play"></i> </button>
+                    <button id="queryStopBtn" class="btn btn-default btnQuery"
+                    style="display:none ;" onfocus="this.blur();" data-hover="tooltip" title="Cancel" data-placement="left">
+                        <i class="fa fa-stop"></i> </button>
+                    <br/>
+                    <button id="querySettingsBtn" class="btn btn-default btnQuery"
+                    onfocus="this.blur();"
+                    data-toggle="modal" data-target="#querySettingsModal"
+                    data-hover="tooltip" title="Settings" data-placement="left">
+                        <i class="fa fa-cog"></i> </button>
+                    <br/>
+                    <button id="queryOpenTemplateBtn" class="btn btn-default btnQuery"
+                    onfocus="this.blur();"
+                    data-toggle="modal" data-target="#queryOpenTemplateModal"
+                    data-hover="tooltip" title="Open" data-placement="left">
+                        <i class="fa fa-folder-open"></i> </button>
+                    <br/>
+                    <button id="querySaveTemplateBtn" class="btn btn-default btnQuery"
+                    onfocus="this.blur();"
+                    data-toggle="modal" data-target="#querySaveTemplateModal"
+                    data-hover="tooltip" title="Save" data-placement="left">
+                        <i class="fa fa-floppy-o"></i> </button>
+                    <br/>
+                    <button id="queryNewBtn" class="btn btn-default btnQuery"
+                    onfocus="this.blur();"
+                    data-hover="tooltip" title="Clear" data-placement="left">
+                        <i class="fa fa-eraser"></i> </button>
+                    <br/>
+                    <button id="queryDeleteTemplateBtn" class="btn btn-default btnQuery"
+                    onfocus="this.blur();"
+                    data-toggle="modal" data-target="#queryDeleteTemplateModal"
+                    data-hover="tooltip" title="Delete" data-placement="left">
+                        <i class="fa fa-trash-o"></i> </button>
+                    <br/>
+                    <button id="queryHelpBtn" class="btn btn-default btnQuery"
+                    onfocus="this.blur();"
+                    data-toggle="modal" data-target="#queryHelpModal"
+                    data-hover="tooltip" title="Help" data-placement="left">
+                        <i class="fa fa-question-circle"></i> </button>
+                </div>
+                <div>
+                    <div id="queryEditor"></div>
+                </div>
+            </div>
+        </div>
+        <div id="querySchemaNavigatorDiv" class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading" >
+                    <h4 class="panel-title">
+                        Schema Navigator
+                        <i class="fa fa-refresh pull-right" id="querySchemaRefreshBtn" aria-hidden="true" style="cursor:pointer ; right:0px ;"></i>
+                    </h4>
+                </div>
+                <div style="height:248px ; overflow:scroll ;">
+                    <div class="panel-body" id="querySchema" style="padding:5px ;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <div id="queryResultContainer">
+        <div id="queryProcessingDiv" style="display:none ;">
+            <span class="help-block"><img src="/img/loading.gif" style="margin-bottom:5px ; margin-left: 10px"> &nbsp;&nbsp;Processing, please wait...</span>
+        </div>
+        <div id="queryErrorDiv" style="display:none ;">
+            <div class="panel panel-danger">
+                <div class="panel-heading">ERROR</div>
+                <div class="panel-body" style="padding:0px">
+
+                    <span id="queryErrorBlock" class="ember-view ember-text-field form-control"
+                    spellcheck="false">N/A</span>
+                </div>
+            </div>
+        </div>
+        <div id="queryStatsDiv" style="display:none ;">
+            <p id="queryStatsMsg" class="help-block"></p>
+        </div>
+        <div id="queryResultDiv"></div>
+    </div>
+
+
+    <div class="modal fade" id="querySettingsModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>max.rows</label>
+                        <select id="querySettingsMaxResults" class="form-control">
+                            <option value="500" selected>500</option>
+                            <option value="1000">1K</option>
+                            <option value="5000">5K</option>
+                            <option value="unlimited">unlimited</option>
+                        </select>
+                        <p class="help-block">Limit the number of rows to be shown. If 'unlimited' is selected,
+                            query results will be returned as file download to prevent your browser going out of memory</p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>selectable.headers</label>
+                        <select id="querySettingsResultColNames" class="form-control">
+                            <option value="true" selected>Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                        <p class="help-block">When disabled, column headers will not be selectable</p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>query.txdate</label>
+                        <div class='input-group date tableImportText' id='queryTxDate'>
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar fa-fw" style="font-size: 13px"></span>
+                            </span>
+                            <input type='text' class="form-control tableImportText" id="queryTxDateInput"/>
+                        </div>
+                        <p class="help-block">Assign initial time offset used by $tx_date() function for ad-hoc queries</p>
+                    </div>
+                </div>
+                <script>
+                        function getDate() {
+                            var date = new Date();
+                            var day = date.getDate();
+                            var month = date.getMonth();
+                            var year = date.getFullYear();
+                            return new Date(year, month, day);
+                        }
+                        $('#queryTxDate').datetimepicker({
+                            defaultDate: getDate(),
+                            format: 'YYYY-MM-DD HH:mm:ss',
+                        });
+                </script>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="queryOpenTemplateModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-folder-open"></i> Open</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <select id="queryOpenTemplateName" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Query</label>
+                        <textarea id="queryOpenTemplateContent" class="form-control" rows="6" tabindex=-1 readonly></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="queryOpenTemplateConfirm" type="button" class="btn btn-default" data-dismiss="modal">
+                        Open</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="querySaveTemplateModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-floppy-o"></i> Save</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input id="querySaveTemplateName" class="form-control" placeholder="">
+                        <p class="help-block">
+                            If existing query matches the same name, it will be overwritten</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Query</label>
+                        <textarea id="querySaveTemplateContent" class="form-control" rows="6" tabindex=-1 readonly></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="querySaveTemplateConfirm" type="button" class="btn btn-default" data-dismiss="modal">
+                        Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="queryDeleteTemplateModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-trash-o"></i> Delete</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Name</label>
+                    <select id="queryDeleteTemplateName" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label>Query</label>
+                    <textarea id="queryDeleteTemplateContent" class="form-control" rows="6" tabindex=-1 readonly></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="queryDeleteTemplateConfirm" type="button" class="btn btn-default" data-dismiss="modal">
+                    Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="modal fade" id="queryChartModal" role="dialog">
+        <div class="modal-dialog" style="width:850px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-bar-chart"></i> Chart</h4>
+                </div>
+                <div class="modal-body">
+                <table style="width:100%">
+                    <tr>
+                        <td style="vertical-align: top; padding:10px;">
+                            <label>chart.type</label>
+                            <br/>
+                            <select id="queryChartSelect">
+                                <option value="line" selected>Line (line)</option>
+                                <option value="col">Column (col)</option>
+                                <option value="bar">Bar (bar)</option>
+                                <option value="area">Area (area)</option>
+                                <option value="stack_col">Stacked Column (stack_col)</option>
+                                <option value="stack_bar">Stacked Bar (stack_bar)</option>
+                                <option value="stack_area">Stacked Area (stack_area)</option>
+                                <option value="rpie">Row Agg. Pie (rpie)</option>
+                                <option value="rdonut">Row Agg. Donut (rdonut)</option>
+                                <option value="rfunnel">Row Agg. Funnel (rfunnel)</option>
+                                <option value="cpie">Column Agg. Pie (cpie)</option>
+                                <option value="cdonut">Column Agg. Donut (cdonut)</option>
+                                <option value="cfunnel">Column Agg. Funnel (cfunnel)</option>
+                            </select>
+                            <br/>
+                            <br/>
+                            <label>chart.fields</label>
+                            <br/>
+                            <div id="queryChartFieldsDiv">
+                            </div>
+                            <br/>
+                            <label id="queryChartGroupByLabel">chart.group-by.field</label>
+                            <br/>
+                            <select id="queryChartGroupBySelect"></select>
+                            <br/>
+                            <br/>
+                            <label>chart.formula</label>
+                            <br/>
+                            <span id="queryChartFormula"></span>
+                        </td>
+
+                        <td style="vertical-align: top; padding:10px;">
+                            <div id="queryChartDiv" align="center" ></div>
+                        </td>
+                    </tr>
+                </table>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="queryHelpModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-question-circle"></i> Help</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="help-content">
+                        <label>SQL Dialect</label>
+                        <p>Reference: <a target="_blank" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select">
+                            https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Select
+                        </a></p>
+                        <label>UDF (User Defined Functions)</label>
+                        <table class="help-table">
+                            <thead>
+                                <td class="help-header-l">Function</td>
+                                <td class="help-header-r">Description</td>
+                            </thead>
+                            <tbody>
+                                @for(i <- 0 to doraUdfs.length - 1) {
+                                    <tr>
+                                        <td class="help-field">@doraUdfs(i).getClass.getSimpleName.charAt(0).toLower@doraUdfs(i).getClass.getSimpleName.substring(1)</td>
+                                        <td class="help-field">Usage: @doraUdfs(i).getUsage() <br/> @doraUdfs(i).getDescription()
+                                    </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br/>
+                        <label>TxDate</label>
+                        <p>Dora supports a custom command $tx_date, it should be placed between quotes to display as string value</p>
+                        <table class="help-table">
+                            <thead>
+                                <td class="help-header-l">Command</td>
+                                <td class="help-header-r">Description</td>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="help-field">$tx_date()</td>
+                                    <td class="help-field">Get current time in yyyy-MM-dd format</td>
+                                </tr>
+                                <tr>
+                                    <td class="help-field">$tx_datetime()</td>
+                                    <td class="help-field">Get current date time in yyyy-MM-dd HH:mm:ss format</td>
+                                </tr>
+                                <tr>
+                                    <td class="help-field">$tx_date(HH:mm)</td>
+                                    <td class="help-field">Get current hours and minutes</td>
+                                </tr>
+                                <tr>
+                                    <td class="help-field">$tx_date(yyyy/MM/dd)</td>
+                                    <td class="help-field">Get current date in yyyy/MM/dd format</td>
+                                </tr>
+                                <tr>
+                                    <td class="help-field">$tx_date(yyyy-MM,-1M)</td>
+                                    <td class="help-field">
+                                        Get current date in yyyy-MM format, plus decreasing time offset of 1 month</td>
+                                </tr>
+                                <tr>
+                                    <td class="help-field">$tx_date(yyyy-MM-dd HH,1D+6H)</td>
+                                    <td class="help-field">
+                                        Get current date in yyyy-MM-dd HH format, plus increasing time offset of 1 day and 6 hours forward</td>
+                                </tr>
+                                <tr>
+                                    <td class="help-field">$tx_date(yyyy/MM/dd,1Y-2W)</td>
+                                    <td class="help-field">
+                                        Get current date in yyyy/MM/dd format, plus increasing time offset of 1 year minus 2 weeks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="">
+        <form id="queryDownloadTsv" name="tsv" method="post" action="/queryResult" target="_top">
+            <input type=hidden id="queryDownloadSql" name="sql" value="">
+            <input type=hidden id="queryDownloadLimit" name="limit" value=""/>
+            <input type=hidden id="queryDownloadTxDate" name="txDate" value=""/>
+            <input type=hidden id="queryDownloadJobId" name="jobId" value=""/>
+        </form>
+    </div>
+    <br/>
+</div>

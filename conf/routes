@@ -1,0 +1,38 @@
+
+GET           /                                 com.eds.dora.web.controllers.MainController.root
+GET           /index.html                       com.eds.dora.web.controllers.MainController.root
+GET           /dora.html                        com.eds.dora.web.controllers.MainController.main
+#login
+GET           /login.html                       com.eds.dora.web.controllers.MainController.login
+GET           /logout.html                      com.eds.dora.web.controllers.MainController.logout
+POST          /login.html                       com.eds.dora.web.controllers.MainController.loginSubmit
+
+#topology
+GET           /topology.json                    com.eds.dora.web.controllers.MainController.getTopology
+POST          /topology.json                    com.eds.dora.web.controllers.MainController.updateTopology
+
+#namespace
+GET           /namespace.json                   com.eds.dora.web.controllers.MainController.namespace
+POST          /switchNamespace.html             com.eds.dora.web.controllers.MainController.switchNamespace
+
+#instancesStatus
+GET           /instance/status.json             com.eds.dora.web.controllers.MainController.instancesStatus
+POST          /instance/restart/:instanceName   com.eds.dora.web.controllers.MainController.restartInstance(instanceName: String)
+
+#jobStatus
+GET           /dashboard.html                   com.eds.dora.web.controllers.DashboardController.main
+GET           /dashboardQueries.json            com.eds.dora.web.controllers.DashboardController.queryStatus
+GET           /dashboardQueryCancel             com.eds.dora.web.controllers.DashboardController.queryCancel
+
+#query
+GET           /query.html                       com.eds.dora.web.controllers.QueryController.main
+POST          /queryResult                      com.eds.dora.web.controllers.QueryController.queryResult
+GET           /queryTemplate.json               com.eds.dora.web.controllers.QueryController.template
+POST          /queryTemplate.json               com.eds.dora.web.controllers.QueryController.template
+GET           /querySchema.json                 com.eds.dora.web.controllers.QueryController.schema
+GET           /queryTable.json                  com.eds.dora.web.controllers.QueryController.table
+GET           /queryField.json                  com.eds.dora.web.controllers.QueryController.field
+
+#static files
+GET           /favicon.ico                      controllers.Assets.at(path="/public/img", file="favicon.ico")
+GET           /*file                            controllers.Assets.at(path="/public", file)

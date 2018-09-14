@@ -1,0 +1,54 @@
+@(error: String, stackTrace: String)
+
+<html lang="en">
+    <head>
+        <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="/css/sb-admin-2.css" rel="stylesheet" type="text/css">
+        <link href="/css/bootstrap-social.css" rel="stylesheet" type="text/css">
+        <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <script src="/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/jquery-md5.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <nav class="navbar navbar-default navbar-static-top" role="nav" style="margin-bottom: 0 ; background-color:#114b53 ; position:fixed ; min-width:100%">
+                <div class="navbar-header" >
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle nav</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img class="navbar-brand" src="/img/mig33_logo.png"/>
+                    <a class="navbar-brand" style="color:#fff ; font-family:'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif ;" href="/">
+                        D O R A </a>
+                </div>
+            </nav>
+            <div id="page-wrapper">
+                <br /> <br /> <br />
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <i class="fa fa-exclamation-circle fa-fw"></i> @error
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form role="form" action="/topic_create.html" method="post">
+                                    <div class="form-group">
+                                        <pre style="font-size:10px">@stackTrace.replace("\n", "\n")</pre>
+                                    </div>
+                                    <div align=center>
+                                        <button type="button" class="btn btn-default" onclick="javascript:window.history.back(-1);">
+                                            OK </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+    </body>
+</html>

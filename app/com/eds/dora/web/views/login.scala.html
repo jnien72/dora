@@ -1,0 +1,90 @@
+@(isError: Boolean)
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="/css/sb-admin-2.css" rel="stylesheet" type="text/css">
+        <link href="/css/bootstrap-social.css" rel="stylesheet" type="text/css">
+        <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <script src="/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/jquery-md5.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <nav class="navbar navbar-default navbar-static-top" role="nav" style="margin-bottom: 0 ;
+                background-color: #114b53 ;
+                position: fixed ;
+                min-width: 100%">
+                <div class="navbar-header" >
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle nav</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img class="navbar-brand" src="/img/dora.jpg" style="height:50px;padding:5px;"/>
+                    <a class="navbar-brand" style="color: #fff ;
+                        font-family: 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif ;" href="/">D O R A</a>
+                </div>
+            </nav>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12" style="width: 100%;text-align: center;">
+                        <br/>
+                        <div class="login-panel panel panel-primary" style="margin-top:80px; width:335px;display: inline-block;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Please login</h3>
+                            </div>
+                            <div class="panel-body" align="center">
+                                <br/>
+                                <img src="/img/dora.jpg" style="border-radius: 10px;"/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <form method="post" action="/login.html">
+                                    <div class="form-group">
+                                        <div class="cols-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                                <input type="text" class="form-control" name="username" id="username" placeholder="Enter your Username"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="cols-sm-10">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter your Password"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block login-button" style="background-color: #419078;">Login</button>
+                                    </div>
+                                </form>
+                                <script>
+                                        if (window.location.hash && document.getElementById("loginBtn")) {
+                                            document.getElementById("loginBtn").href += "&state=" + window.location.hash.substring(1)
+                                        }
+                                </script>
+                                <br/>
+                                @if(isError) {
+                                    <div class="alert alert-danger alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        Login Failed
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

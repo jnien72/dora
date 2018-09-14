@@ -1,0 +1,27 @@
+<configuration>
+    <property>
+        <name>spark.sql.parquet.mergeSchema</name>
+        <value>true</value>
+    </property>
+
+    <property>
+        <name>hive.security.authorization.enabled</name>
+        <value>false</value>
+    </property>
+
+    <property>
+        <name>hive.server2.enable.doAs</name>
+        <value>false</value>
+    </property>
+
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>/tmp/hdfs/warehouse/dora</value>
+    </property>
+
+    <property>
+        <name>datanucleus.autoCreateSchema</name>
+        <value>true</value>
+    </property>
+
+</configuration>
