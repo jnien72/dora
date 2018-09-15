@@ -17,9 +17,9 @@ sed 's/\[START_CMD\]/\/opt\/dora\/sbin\/start-web.sh/g' \
 cd dist
 docker rmi $IMG_NAME 2> /dev/null | true
 docker build -t $IMG_NAME .
-echo "[ecs server] exporting image ... "
+echo "[dora] exporting image ... "
 docker save $IMG_NAME | gzip > $FILE_PATH
-echo "[ecs server] saved img to $FILE_PATH"
+echo "[dora] saved img to $FILE_PATH"
 
 #build agent
 
@@ -31,6 +31,6 @@ sed 's/\[START_CMD\]/\/opt\/dora\/sbin\/start-agent.sh/g' \
 cd dist
 docker rmi $IMG_NAME 2> /dev/null | true
 docker build -t $IMG_NAME .
-echo "[ecs loader] exporting image ... "
+echo "[dora] exporting image ... "
 docker save $IMG_NAME | gzip > $FILE_PATH
-echo "[ecs loader] saved img to $FILE_PATH"
+echo "[dora] saved img to $FILE_PATH"
