@@ -10,7 +10,7 @@ resolvers += "hwx-releases" at "http://repo.hortonworks.com/content/repositories
 resolvers += "hwx-public" at "http://repo.hortonworks.com/content/groups/public/"
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
-logLevel := Level.Error
+logLevel := Level.Info
 
 libraryDependencies ++= Seq(
   "com.healthmarketscience.rmiio" % "rmiio" % "2.1.2",
