@@ -15,7 +15,3 @@ docker run -d \
 -v /etc/localtime:/etc/localtime:ro \
 -v /opt/hadoop:/opt/hadoop:ro \
 $IMG_NAME
-
-echo "[$IMG_NAME] login into container ... "
-
-docker exec -ti $IMG_NAME bash
