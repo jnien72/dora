@@ -9,7 +9,7 @@ docker rm $IMG_NAME
 docker run -d \
 --name $IMG_NAME \
 --network="host" \
--h $IMG_NAME-`hostname` \
+-h `hostname` \
 -v /etc/hosts:/etc/hosts:ro \
 -v /etc/timezone:/etc/timezone:ro \
 -v /etc/localtime:/etc/localtime:ro \
