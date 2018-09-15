@@ -9,17 +9,6 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/dora-${log.name}.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/dora-${log.name}.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>7</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>[%date] [%level] %logger - %message%n%xException</pattern>
-        </encoder>
-    </appender>
-
     <logger name="play" level="INFO" />
     <logger name="application" level="DEBUG" />
     <logger name="org.eclipse.jetty" level="ERROR" />
@@ -38,7 +27,6 @@
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE" />
     </root>
 
 </configuration>

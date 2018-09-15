@@ -5,10 +5,6 @@ cd ..
 
 export APP_HOME=`pwd`;
 
-if [ ! -d "$APP_HOME/logs" ]; then
-	mkdir $APP_HOME/logs
-fi
-
 ####
 #   These jars can't be merged, they have are signed somehow, need to be alone as it is :(
 ###
@@ -28,6 +24,10 @@ fi
 
 CLASSPATH="";
 
+if [ ! -d "$APP_HOME/logs" ]; then
+	mkdir $APP_HOME/logs
+fi
+
 for jar_file in $APP_HOME/lib/*.jar; do
 	CLASSPATH="$CLASSPATH:$jar_file";
 done;
@@ -38,29 +38,9 @@ JVM_OPTS="$JVM_OPTS -Dfile.encoding=UTF-8";
 JVM_OPTS="$JVM_OPTS -XX:+UseG1GC"
 JVM_OPTS="$JVM_OPTS -XX:MaxGCPauseMillis=20"
 JVM_OPTS="$JVM_OPTS -XX:InitiatingHeapOccupancyPercent=35"
-JVM_OPTS="$JVM_OPTS -XX:+PrintGCDateStamps";
-JVM_OPTS="$JVM_OPTS -XX:+PrintHeapAtGC";
-JVM_OPTS="$JVM_OPTS -XX:+PrintGCDetails";
-JVM_OPTS="$JVM_OPTS -XX:+PrintTenuringDistribution";
-JVM_OPTS="$JVM_OPTS -XX:+UseGCLogFileRotation";
-JVM_OPTS="$JVM_OPTS -XX:NumberOfGCLogFiles=1";
-JVM_OPTS="$JVM_OPTS -XX:GCLogFileSize=1M";
 JVM_OPTS="$JVM_OPTS -XX:+AlwaysPreTouch";
 JVM_OPTS="$JVM_OPTS -XX:+UseCompressedOops";
 JVM_OPTS="$JVM_OPTS -Xmx64m"
 JVM_OPTS="$JVM_OPTS -Xms64m"
 
-pid=pid/dora-agent.pid
-log=logs/dora-agent.log
-
-if [ -f $pid ]; then
-      if kill -0 `cat $pid` > /dev/null 2>&1; then
-        echo $command running as process `cat $pid`.  Stop it first.
-        exit 1
-      fi
-fi
-
-echo starting dora agent, sending stdout/stderr to $log
-nohup java -classpath $CLASSPATH $JVM_OPTS com.eds.dora.cluster.DoraAgent "$@" > "$log" 2>&1 < /dev/null &
-echo $! > $pid
-sleep 1; head "$log"
+java -noverify -classpath $CLASSPATH $JVM_OPTS com.eds.dora.cluster.DoraAgent

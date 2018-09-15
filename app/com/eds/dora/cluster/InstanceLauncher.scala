@@ -61,7 +61,6 @@ object InstanceLauncher {
       val namespace = tokens(0)
       val instanceType = tokens(1)
       val instanceName = namespace + "-" + instanceType
-      System.setProperty("log.name", instanceName)
       LogFactory.getLog(getClass).info("Starting instance [" + instanceId + "]")
 
       val prefix = instanceType.charAt(0).toUpper + instanceType.substring(1)

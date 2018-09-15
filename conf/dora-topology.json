@@ -14,7 +14,7 @@
         }
       ],
       "predefinedTables": {
-        "dcs_etmall":"/tmp/hdfs/warehouse/dcs/etmall"
+        "my_table":"/tmp/hdfs/warehouse/sample_input"
       }
     }
   ],

@@ -257,8 +257,6 @@ object ClusterAdmin {
 
   def main(args: Array[String]) = {
 
-    System.setProperty("log.name", "cluster-admin")
-
     if (args.length == 0) {
       printUsage()
       System.exit(-1)

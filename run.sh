@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMG_NAME="dora"
+IMG_NAME="$1"
 
 gunzip -c dist/docker/$IMG_NAME.img | docker load
 
@@ -16,6 +16,6 @@ docker run -d \
 -v /opt/hadoop:/opt/hadoop:ro \
 $IMG_NAME
 
-echo "[$project_name] login into container ... "
+echo "[$IMG_NAME] login into container ... "
 
 docker exec -ti $IMG_NAME bash

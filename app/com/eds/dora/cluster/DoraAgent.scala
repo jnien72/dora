@@ -14,7 +14,6 @@ object DoraAgent {
   private var agentInfo:AgentInfo=null
 
   def main(args: Array[String]): Unit = {
-    System.setProperty("log.name", "agent")
     start()
     Thread.sleep(Long.MaxValue)
   }

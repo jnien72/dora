@@ -14,7 +14,6 @@ object WebConsole {
 
   def main(args: Array[String]): Unit = {
     try{
-      System.setProperty("log.name", "agent")
       val process = new RealServerProcess(args)
       val config: ServerConfig = play.core.server.ProdServerStart.readServerConfigSettings(process)
       val application: Application = {
