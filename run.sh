@@ -1,24 +1,21 @@
 #!/bin/bash
 
-cd `dirname "$0"`;
+IMG_NAME="dora"
 
-project_name="dora"
+gunzip -c dist/docker/$IMG_NAME.img | docker load
 
-echo "[$project_name] cleaning existing image & container... "
-docker stop $project_name 2> /dev/null | true
-docker rm $project_name 2> /dev/null | true
-docker rmi $project_name 2> /dev/null | true
-
-echo "[$project_name] building docker image ... "
-docker build -t $project_name .
-
-echo "[$project_name] starting container ..."
+docker stop $IMG_NAME
+docker rm $IMG_NAME
 docker run -d \
---name $project_name \
+--name $IMG_NAME \
 --network="host" \
--h `hostname` \
-$project_name
+-h $IMG_NAME-`hostname` \
+-v /etc/hosts:/etc/hosts:ro \
+-v /etc/timezone:/etc/timezone:ro \
+-v /etc/localtime:/etc/localtime:ro \
+-v /opt/hadoop:/opt/hadoop:ro \
+$IMG_NAME
 
 echo "[$project_name] login into container ... "
 
-docker exec -ti $project_name bash
+docker exec -ti $IMG_NAME bash
